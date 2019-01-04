@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+cd /srv/funkwhale/api
+export $(awk '!/^(#|$)/ { print $1 }' .env)
+s6-setuidgid funkwhale celery -A funkwhale_api.taskapp beat

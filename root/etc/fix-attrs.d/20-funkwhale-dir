@@ -1,0 +1,5 @@
+/srv/funkwhale/      false funkwhale 0755 0755
+/srv/funkwhale/data/ true  funkwhale 0755 0755
+/srv/funkwhale/api/  true  funkwhale 0700 0700
+
+/srv/funkwhale/front/ true nginx 0700 0700

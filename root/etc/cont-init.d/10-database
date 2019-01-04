@@ -1,0 +1,21 @@
+#!/usr/bin/with-contenv sh
+
+# helper functions
+run_user() { su - postgres -c "$1"; }
+run_psql() { run_user "psql -c \"$1\""; }
+
+# does database already exist?
+[[ -d /var/lib/postgresql/data ]] && exit 0
+
+# initialize database
+run_user 'initdb /var/lib/postgresql/data'
+run_user 'pg_ctl -D /var/lib/postgresql/data start'
+
+# database setup
+run_psql "CREATE DATABASE funkwhale WITH ENCODING 'UTF-8';"
+run_psql 'CREATE USER funkwhale;'
+run_psql 'GRANT ALL PRIVILEGES ON DATABASE funkwhale TO funkwhale;'
+run_psql 'ALTER USER funkwhale WITH SUPERUSER;'
+run_psql 'CREATE EXTENSION unaccent;'
+
+exit 0

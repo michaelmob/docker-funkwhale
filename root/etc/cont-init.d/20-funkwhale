@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+cd /srv/funkwhale/api/
+s6-setuidgid funkwhale python3 manage.py migrate
+s6-setuidgid funkwhale python3 manage.py collectstatic

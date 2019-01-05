@@ -1,7 +1,7 @@
 # Funkwhale Docker Container
 
 All-in-one container for Funkwhale.  
-A work-in-progress.
+A work-in-progress. This container will not work, yet.
 
 ### TODO
 + env variable handling

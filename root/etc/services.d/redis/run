@@ -1,2 +1,2 @@
-#!/usr/bin/with-contenv sh
-redis-server
+#!/usr/bin/env sh
+exec redis-server

@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv sh
+set -a && . /defaults/pre_env && . "$FUNKWHALE_PATH/config/.env" && set +a
 cd /srv/funkwhale/api
-export $(awk '!/^(#|$)/ { print $1 }' .env)
-s6-setuidgid funkwhale daphne config.asgi:application
+exec s6-setuidgid funkwhale daphne config.asgi:application

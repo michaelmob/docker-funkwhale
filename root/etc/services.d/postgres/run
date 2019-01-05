@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv
+exec s6-setuidgid postgres postgres -D /var/lib/postgresql/data

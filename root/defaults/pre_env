@@ -1,9 +1,0 @@
-# Django Allowed Hosts
-# https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
-DJANGO_ALLOWED_HOSTS='127.0.0.1,localhost'
-
-# PostgreSQL Database URL
-DATABASE_URL=postgresql://funkwhale@:5432/funkwhale
-
-# Redis Cache URL
-CACHE_URL=redis://127.0.0.1:6379/0

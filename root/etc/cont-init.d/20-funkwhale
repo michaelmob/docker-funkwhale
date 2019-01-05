@@ -1,20 +1,4 @@
 #!/usr/bin/with-contenv sh
-
-# create env file
-env_file="$FUNKWHALE_PATH/config/.env"
-[[ -f $env_file ]] || cp /defaults/env $env_file
-
-# generate secret key
-[[ $(grep -c '^DJANGO_SECRET_KEY=$' $env_file) = 0 ]] && \
-	sed -i "/^DJANGO_SECRET_KEY=$/ s/$/$(openssl rand -base64 45)/g" $env_file
-
-# exports
-set -a 
-. /defaults/pre_env
-. "$FUNKWHALE_PATH/config/.env"
-set +a
-
-# migrate and collect static
 cd "$FUNKWHALE_PATH/api"
 s6-setuidgid funkwhale \
 	python3 manage.py migrate && \

@@ -37,7 +37,7 @@ RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 # install dependencies
 RUN apk add            \
-	openssl            \
+	youtube-dl         \
 	git                \
 	postgresql         \
 	postgresql-contrib \
@@ -80,7 +80,6 @@ RUN mkdir -p /run/nginx && \
 
 
 # pip requirements
-VOLUME /home/mike/Workspace/docker/docker-funkwhale/data/python:/usr/lib/python3.6/site-packages
 RUN pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
 	pip3 install -r $FUNKWHALE_PATH/api/requirements.txt
@@ -88,6 +87,11 @@ RUN pip3 install --upgrade pip && \
 
 # postgresql setup
 RUN mkdir -p /run/postgresql /var/lib/postgresql
+
+
+# chromaprint fpcalc
+ADD https://github.com/acoustid/chromaprint/releases/download/v1.4.2/chromaprint-fpcalc-1.4.2-linux-x86_64.tar.gz /tmp/fpcalc.tar.gz
+RUN tar --strip 1 -C /usr/local/bin -xzf /tmp/fpcalc.tar.gz
 
 
 # create users

@@ -6,21 +6,20 @@ run_user() { su - postgres -c "$1"; }
 run_psql() { run_user "psql -c \"$1\""; }
 
 # does db already exist? start server
-if [[ -d $data_path/pgdata ]]; then
+if [[ -f "$data_path/PG_VERSION" ]]; then
 	run_user "pg_ctl -D $data_path start"
-	exit 0
+else
+	# initialize db
+	run_user "initdb $data_path && touch /tmp/db-created"
+
+	# start server
+	run_user "pg_ctl -D $data_path start"
+
+	# setup
+	run_psql "CREATE DATABASE funkwhale WITH ENCODING 'UTF-8';"
+	run_psql 'CREATE USER funkwhale;'
+	run_psql 'GRANT ALL PRIVILEGES ON DATABASE funkwhale TO funkwhale;'
+	run_psql 'ALTER USER funkwhale WITH SUPERUSER;'
+	run_psql 'CREATE EXTENSION unaccent;'
 fi
 
-# initialize db
-touch /tmp/db-created
-run_user "initdb $data_path"
-
-# start server
-run_user "pg_ctl -D $data_path start"
-
-# setup
-run_psql "CREATE DATABASE funkwhale WITH ENCODING 'UTF-8';"
-run_psql 'CREATE USER funkwhale;'
-run_psql 'GRANT ALL PRIVILEGES ON DATABASE funkwhale TO funkwhale;'
-run_psql 'ALTER USER funkwhale WITH SUPERUSER;'
-run_psql 'CREATE EXTENSION unaccent;'

@@ -1,8 +1,11 @@
 #!/usr/bin/with-contenv sh
 cd "$FUNKWHALE_PATH/api"
-s6-setuidgid funkwhale python3 manage.py migrate
 s6-setuidgid funkwhale python3 manage.py collectstatic
+s6-setuidgid funkwhale python3 manage.py migrate
 
-if [[ -f /tmp/db-created ]]; then
-	echo # Create default user
+if [[ -f '/tmp/db-created' ]]; then
+	rm '/tmp/db-created'
+	cmd='from django.contrib.auth import get_user_model as m; U = m().objects'
+	cmd="$cmd; U.create_superuser('admin', 'admin@admin.com', 'admin')"
+	s6-setuidgid funkwhale python3 manage.py shell -c "$cmd"
 fi

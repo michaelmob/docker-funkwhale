@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv sh
 cd "$FUNKWHALE_PATH/api"
-s6-setuidgid funkwhale \
-	python3 manage.py migrate && \
-	python3 manage.py collectstatic
+s6-setuidgid funkwhale python3 manage.py migrate
+s6-setuidgid funkwhale python3 manage.py collectstatic
+
+if [[ -f /tmp/db-created ]]; then
+	echo # Create default user
+fi

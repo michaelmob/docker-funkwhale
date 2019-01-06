@@ -12,6 +12,7 @@ if [[ -d $data_path/pgdata ]]; then
 fi
 
 # initialize db
+touch /tmp/db-created
 run_user "initdb $data_path"
 
 # start server
@@ -23,5 +24,3 @@ run_psql 'CREATE USER funkwhale;'
 run_psql 'GRANT ALL PRIVILEGES ON DATABASE funkwhale TO funkwhale;'
 run_psql 'ALTER USER funkwhale WITH SUPERUSER;'
 run_psql 'CREATE EXTENSION unaccent;'
-
-exit 0

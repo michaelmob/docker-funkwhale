@@ -68,7 +68,7 @@ ARG FUNKWHALE_DOWNLOAD_URL=$FUNKWHALE_REPO_URL/-/jobs/artifacts/$FUNKWHALE_VERSI
 ADD $FUNKWHALE_DOWNLOAD_URL?job=build_api /tmp/api.zip
 ADD $FUNKWHALE_DOWNLOAD_URL?job=build_front /tmp/front.zip
 
-RUN mkdir -p $FUNKWHALE_PATH /config && \
+RUN mkdir -p $FUNKWHALE_PATH && \
 	cd $FUNKWHALE_PATH && \
 	unzip /tmp/api.zip && \
 	unzip /tmp/front.zip
@@ -91,7 +91,7 @@ RUN mkdir -p /run/postgresql /var/lib/postgresql
 
 
 # create users
-RUN adduser -S funkwhale
+RUN addgroup funkwhale && adduser -S funkwhale -G funkwhale
 
 
 # copy files to container and set entry script

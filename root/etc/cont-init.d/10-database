@@ -1,19 +1,18 @@
 #!/usr/bin/with-contenv sh
 
 # helper functions
-data_path='/var/lib/postgresql/data'
 run_user() { su - postgres -c "$1"; }
 run_psql() { run_user "psql -c \"$1\""; }
 
 # does db already exist? start server
-if [[ -f "$data_path/PG_VERSION" ]]; then
-	run_user "pg_ctl -D $data_path start"
+if [[ -f "$DATABASE_PATH/PG_VERSION" ]]; then
+	run_user "pg_ctl -D $DATABASE_PATH start"
 else
 	# initialize db
-	run_user "initdb $data_path && touch /tmp/db-created"
+	run_user "initdb $DATABASE_PATH && touch /tmp/db-created"
 
 	# start server
-	run_user "pg_ctl -D $data_path start"
+	run_user "pg_ctl -D $DATABASE_PATH start"
 
 	# setup
 	run_psql "CREATE DATABASE funkwhale WITH ENCODING 'UTF-8';"

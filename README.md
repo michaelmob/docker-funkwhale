@@ -1,8 +1,16 @@
-# Funkwhale Docker Container
+# funkwhale docker container
 
-All-in-one container for Funkwhale.  
-This container works but may need some tweaking.
-More instructions to come soon.
+[Funkwhale](https://funkwhale.audio/) is a modern, self-hosted, free and open-source music server.
 
-### TODO
-+ subsonic rest api
+## Usage
+```sh
+docker create \
+	--name=funkwhale \
+	-e LIBRARY_ID=<generated_library_id> \
+	-v </path/to/database>:/database \
+	-v </path/to/music>:/music:ro \
+	funkwhale
+```
+
+## Instructions
+Being written...

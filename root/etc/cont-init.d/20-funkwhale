@@ -3,6 +3,9 @@ cd "$FUNKWHALE_PATH/api"
 s6-setuidgid funkwhale python3 manage.py collectstatic
 s6-setuidgid funkwhale python3 manage.py migrate
 
+[[ -n $LIBRARY_ID ]] && s6-setuidgid funkwhale \
+	python3 manage.py import_files $LIBRARY_ID "/music/**/*.{mp3,ogg,flac}" --recursive --noinput
+
 if [[ -f '/tmp/db-created' ]]; then
 	rm '/tmp/db-created'
 	cmd='from django.contrib.auth import get_user_model as m; U = m().objects'

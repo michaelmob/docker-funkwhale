@@ -1,13 +1,19 @@
 #!/usr/bin/with-contenv sh
 cd "$FUNKWHALE_PATH/api"
+echo 'creating funkwhale directories'
+mkdir -p "$STATIC_ROOT" "$MEDIA_ROOT" "$MUSIC_PATH"
+chown -R funkwhale "$STATIC_ROOT" "$MEDIA_ROOT"
+
+echo 'collecting static files'
 s6-setuidgid funkwhale python3 manage.py collectstatic
+
+echo 'running data migration'
 s6-setuidgid funkwhale python3 manage.py migrate
 
-[[ -n $LIBRARY_ID ]] && s6-setuidgid funkwhale \
-	python3 manage.py import_files $LIBRARY_ID "/music/**/*.{mp3,ogg,flac}" --recursive --noinput
-
 if [[ -f '/tmp/db-created' ]]; then
+	echo 'creating default admin user: user=admin pass=admin'
 	rm '/tmp/db-created'
+	B
 	cmd='from django.contrib.auth import get_user_model as m; U = m().objects'
 	cmd="$cmd; U.create_superuser('admin', 'admin@admin.com', 'admin')"
 	s6-setuidgid funkwhale python3 manage.py shell -c "$cmd"

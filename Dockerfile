@@ -10,15 +10,18 @@ ENV FUNKWHALE_FRONTEND_PATH=$FUNKWHALE_PATH/front/dist
 ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale
 ENV FUNKWHALE_PROTOCOL=http
 
+ENV FUNKWHALE_API_IP=127.0.0.1
+ENV FUNKWHALE_API_PORT=8000
+
 ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV DJANGO_SECRET_KEY=funkwhale
-ENV DJANGO_ALLOWED_HOSTS='127.0.0.1,localhost'
+ENV DJANGO_ALLOWED_HOSTS='127.0.0.1,*'
 
 ENV DATABASE_URL=postgresql://funkwhale@:5432/funkwhale
 ENV CACHE_URL=redis://127.0.0.1:6379/0
 
 ENV STATIC_ROOT=$FUNKWHALE_PATH/data/static
-ENV MEDIA_ROOT=$FUNKWHALE_PATH/data/media
+ENV MEDIA_ROOT=/data/media
 
 ENV MUSIC_PATH=/music
 ENV MUSIC_DIRECTORY_PATH=$MUSIC_PATH
@@ -28,10 +31,13 @@ ENV RAVEN_ENABLED=false
 ENV RAVEN_DSN=https://44332e9fdd3d42879c7d35bf8562c6a4:0062dc16a22b41679cd5765e5342f716@sentry.eliotberriot.com/5
 
 ENV REVERSE_PROXY_TYPE=nginx
-ENV NGINX_MAX_BODY_SIZE=30M
+ENV NGINX_MAX_BODY_SIZE=100M
 
-ENV DATABASE_PATH=/database
+ENV DATABASE_PATH=/data/data
 
+
+# copy files to container
+COPY ./root /
 
 # download s6-overlay file
 ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
@@ -55,6 +61,7 @@ RUN \
 	echo 'installing dependencies' && \
 	apk add                \
 		youtube-dl         \
+		gettext            \
 		git                \
 		postgresql         \
 		postgresql-contrib \
@@ -79,7 +86,7 @@ RUN \
 	\
 	\
 	echo 'extracting funkwhale archives' && \
-	mkdir -p $FUNKWHALE_PATH && \
+	mkdir -p $FUNKWHALE_PATH/data && \
 	cd $FUNKWHALE_PATH && \
 	unzip /tmp/api.zip && \
 	unzip /tmp/front.zip && \
@@ -88,8 +95,7 @@ RUN \
 	echo 'setting up nginx' && \
 	mkdir -p /run/nginx && \
 	rm /etc/nginx/conf.d/default.conf && \
-	ln -s /defaults/funkwhale_nginx.conf /etc/nginx/conf.d/funkwhale.conf && \
-	ln -s /defaults/funkwhale_proxy.conf /etc/nginx/funkwhale_proxy.conf && \
+	cp /defaults/funkwhale_proxy.conf /etc/nginx/funkwhale_proxy.conf && \
 	\
 	\
 	echo 'installing pip requirements' && \
@@ -107,10 +113,7 @@ RUN \
 	\
 	\
 	echo 'creating directories' && \
-	mkdir -p /run/postgresql $DATABASE_PATH $MUSIC_PATH && echo 1
+	mkdir -p /run/postgresql
 
 
-
-# copy files to container and set entry script
-COPY ./root /
 ENTRYPOINT ["/init"]

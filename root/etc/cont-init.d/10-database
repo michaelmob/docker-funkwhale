@@ -4,6 +4,9 @@
 run_user() { su - postgres -c "$1"; }
 run_psql() { run_user "psql -c \"$1\""; }
 
+mkdir -p "$DATABASE_PATH"
+chown -R postgres "$DATABASE_PATH"
+
 # does db already exist? start server
 if [[ -f "$DATABASE_PATH/PG_VERSION" ]]; then
 	run_user "pg_ctl -D $DATABASE_PATH start"

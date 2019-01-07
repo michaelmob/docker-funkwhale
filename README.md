@@ -2,17 +2,28 @@
 
 [Funkwhale](https://funkwhale.audio/) is a modern, self-hosted, free and open-source music server.
 
+
 ## Usage
 ```sh
 docker create \
 	--name=funkwhale \
+	-e FUNKWHALE_VERSION=0.17 \
 	-e FUNKWHALE_HOSTNAME='yourdomain.funkwhale' \
 	-e LIBRARY_ID=<generated_library_id> \
-	-v </path/to/data>:/data/data \
-	-v </path/to/music>:/music:ro \
-	-p 3030:80
-	funkwhale
+	-v </path/to/data>:/data \
+	-v </path/to/path>:/music:ro \
+	-p 3030:80 \
+	thetarkus/funkwhale
 ```
+
+
+## Parameters
++ `-e FUNKWHALE_VERSION` - Version of Funkwhale to use.
++ `-e FUNKWHALE_HOSTNAME` - Domain of your Funkwhale instance.
++ `-v /data` - Volume to save media files and database.
++ `-v /music` - Path to your music.
++ `-p 3030:80` - Access Funkwhale on port 3030.
+
 
 ## Instructions
 

@@ -1,11 +1,3 @@
 #!/usr/bin/with-contenv sh
-cd $FUNKWHALE_PATH/api
-
-if [[ -n $LIBRARY_ID ]]; then
-	for i in mp3 ogg flac; do
-		import_files $LIBRARY_ID "/music/**/*.$i" \
-			--in-place --recursive --noinput --async &
-	done
-fi
-
-exec s6-setuidgid funkwhale daphne config.asgi:application
+cd /app/api
+exec s6-setuidgid funkwhale daphne config.asgi:application >> /var/log/funkwhale/funkwhale.log 2>&1

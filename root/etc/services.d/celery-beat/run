@@ -1,3 +1,3 @@
 #!/usr/bin/with-contenv sh
-cd $FUNKWHALE_PATH/api
-exec s6-setuidgid funkwhale celery -A funkwhale_api.taskapp beat
+cd /app/api
+exec s6-setuidgid funkwhale celery -A funkwhale_api.taskapp beat >> /var/log/funkwhale/celery-beat.log 2>&1

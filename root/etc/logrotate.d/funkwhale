@@ -1,0 +1,4 @@
+/var/log/funkwhale/*.log {
+   notifempty
+   missingok
+}

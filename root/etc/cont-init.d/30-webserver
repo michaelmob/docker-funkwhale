@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv sh
+_=$ envsubst < /etc/nginx/funkwhale_nginx.template > /etc/nginx/conf.d/funkwhale.conf

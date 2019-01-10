@@ -1,5 +1,5 @@
 upstream funkwhale-api {
-    server ${FUNKWHALE_API_IP}:${FUNKWHALE_API_PORT};
+    server 127.0.0.1:8000;
 }
 
 
@@ -11,8 +11,9 @@ map ${_}http_upgrade ${_}connection_upgrade {
 
 
 server {
-    listen 80;
-    server_name ${FUNKWHALE_HOSTNAME};
+    listen 80 default_server;
+    #server_name ${FUNKWHALE_HOSTNAME};
+    server_name _;
 
     # TLS
     # Feel free to use your own configuration for SSL here or simply remove the
@@ -21,7 +22,7 @@ server {
     # have a look here for let's encrypt configuration:
     # https://certbot.eff.org/all-instructions/#debian-9-stretch-nginx
 
-    root ${FUNKWHALE_FRONTEND_PATH};
+    root /app/front/dist;
 
     location / {
         try_files ${_}uri ${_}uri/ @rewrites;
@@ -72,7 +73,7 @@ server {
         # has been checked on API side
         # Set this to the same value as your MUSIC_DIRECTORY_PATH setting
         internal;
-        alias ${MUSIC_PATH};
+        alias ${MUSIC_DIRECTORY_PATH};
     }
 
     location /staticfiles/ {

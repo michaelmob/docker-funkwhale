@@ -35,4 +35,4 @@ echo '                           NmmddhhhhhhhhhdmmN'
 echo
 
 cd /app/api
-exec s6-setuidgid funkwhale daphne config.asgi:application >> /var/log/funkwhale/funkwhale.log 2>&1
+exec s6-setuidgid funkwhale daphne config.asgi:application --access-log /var/log/funkwhale/daphne.log

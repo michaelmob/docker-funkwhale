@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv sh
+mkdir -p /data
+
+# ownership
+chown -R funkwhale:funkwhale /app /data
+
+# permission
+chmod -R 0755 /data
+chmod -R 0700 /app
+chmod -R 0750 /app/api/staticfiles /app/front
+chmod 0750 /app /app/api

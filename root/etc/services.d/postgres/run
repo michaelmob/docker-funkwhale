@@ -1,2 +1,2 @@
-#!/usr/bin/with-contenv
-exec s6-setuidgid funkwhale postgres -D "/data/data"
+#!/usr/bin/with-contenv sh
+exec s6-setuidgid funkwhale postgres -D /data/data >> /var/log/postgresql/postgresql.log 2>&1

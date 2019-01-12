@@ -59,7 +59,6 @@ RUN \
 		postgresql         \
 		postgresql-contrib \
 		postgresql-dev     \
-		postgresql-client  \
 		python3-dev        \
 		py3-psycopg2       \
 		py3-pillow         \
@@ -79,7 +78,7 @@ RUN \
 	\
 	\
 	echo 'creating directories' && \
-	mkdir -p /app/data /run/nginx /run/postgresql /var/log/funkwhale && \
+	mkdir -p /app /run/nginx /run/postgresql /var/log/funkwhale && \
 	\
 	\
 	echo 'creating users' && \
@@ -109,5 +108,4 @@ RUN \
 #
 
 COPY ./root /
-
 ENTRYPOINT ["/init"]

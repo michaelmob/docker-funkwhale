@@ -7,8 +7,6 @@
 ```sh
 docker create \
 	--name=funkwhale \
-	-e PUID=1000 \
-	-e PGID=1000 \
 	-e FUNKWHALE_URL=<yourdomain.funkwhale> \
 	-v </path/to/data>:/data \
 	-v </path/to/path>:/music:ro \
@@ -18,9 +16,9 @@ docker create \
 
 
 ## Parameters
-+ `-e PUID` - User ID for volume ownership.
-+ `-e PGID` - Group ID for volume ownership.
-+ `-e FUNKWHALE_URL` - Domain to your Funkwhale instance.
++ `-e PUID` - Optional user ID for volume ownership.
++ `-e PGID` - Optional group ID for volume ownership.
++ `-e FUNKWHALE_URL` - Domain of your Funkwhale instance.
 + `-v /data` - Volume to save media files and database.
 + `-v /music` - Path to your music.
 + `-p 3030:80` - Access Funkwhale on port 3030.
@@ -38,12 +36,9 @@ docker exec -it funkwhale manage createsuperuser
 
 ### Importing Music
 To import your music, open your Funkwhale instance in your browser and find the libraries page under "Add content" and create a library. Click the "details" button on your newly created library and get the library ID from the URL bar. It will look similar to the format of: `b8756c0d-839b-461f-b334-583983dc9ead`.  
-Set the `LIBRARY_ID` environment variable (or replace it inside of the command ) with your library ID, then run the command below.  
+Set the `LIBRARY_ID` environment variable (or replace it inside of the command) with your library ID, then run the command below.  
 ```sh
-docker exec -it funkwhale manage import_files $LIBRARY_ID "/music/**/*.mp3" --in-place --async
+# For file structures similar to ./Artist/Album/Track.mp3
+docker exec -it funkwhale manage import_files $LIBRARY_ID "/music/**/**/*.mp3" --in-place --async
 ```
 For more information see the [Funkwhale docs on importing music](https://docs.funkwhale.audio/importing-music.html).
-
-#### Useful URLs
-Libraries URL: `http://yourdomain.funkwhale/content/libraries/`  
-Admin Account Edit Page: `http://yourdomain.funkwhale/api/admin/users/user/1/change/`

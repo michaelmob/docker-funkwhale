@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv sh
+[[ "$(whoami)" != 'funkwhale' ]] && echo 'Must be run as `funkwhale` user.' && exit 1
+
+export PGDATA='/data/data'
+[[ -w "$PGDATA/PG_VERSION" ]] && exit 0
+
+initdb
+pg_ctl start
+createdb -E 'UTF-8'
+psql -c 'CREATE EXTENSION unaccent;'
+pg_ctl stop

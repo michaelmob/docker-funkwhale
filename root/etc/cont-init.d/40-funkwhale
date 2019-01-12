@@ -1,6 +1,9 @@
 #!/usr/bin/with-contenv sh
 echo 'collecting static files'
-manage collectstatic
+manage collectstatic --no-input
 
 echo 'running data migration'
+export PGDATA='/data/data'
+s6-setuidgid funkwhale pg_ctl start || exit 1
 manage migrate
+s6-setuidgid funkwhale pg_ctl stop

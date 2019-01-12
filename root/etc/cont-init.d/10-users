@@ -1,21 +1,8 @@
 #!/usr/bin/with-contenv sh
 
 # uid/gid modification
-groupmod -o -g "${PGID:-1000}" funkwhale
-usermod -o -u "${PUID:-1000}" funkwhale
+[[ "$PUID" ]] && usermod -o -u $PUID funkwhale
+[[ "$PGID" ]] && groupmod -o -g $PGID funkwhale
 
 # groups
 usermod -aG funkwhale nginx
-
-# ownership
-chown -R funkwhale:funkwhale /app
-chown -R funkwhale:funkwhale /data
-
-# permission
-chmod -R 0700 /app
-chmod 0750 /app /app/api
-chmod -R 0750 /app/api/staticfiles /app/front
-
-chmod -R 0750 /data
-chmod -R 0700 /data/data
-

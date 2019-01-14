@@ -1,4 +1,5 @@
 FROM alpine:3.8
+MAINTAINER thetarkus
 
 
 #
@@ -16,6 +17,7 @@ ARG FUNKWHALE_DOWNLOAD_URL=$FUNKWHALE_REPO_URL/-/jobs/artifacts/$FUNKWHALE_VERSI
 #
 
 # Funkwhale
+ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale
 ENV FUNKWHALE_PROTOCOL=http
 
 # Django
@@ -33,16 +35,6 @@ ENV MUSIC_DIRECTORY_PATH=/music
 # Webserver
 ENV NGINX_MAX_BODY_SIZE=100M
 
-
-#
-# Filesystem Setup
-#
-
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
-ADD https://github.com/acoustid/chromaprint/releases/download/v1.4.2/chromaprint-fpcalc-1.4.2-linux-x86_64.tar.gz /tmp/fpcalc.tar.gz
-
-ADD $FUNKWHALE_DOWNLOAD_URL?job=build_api /tmp/api.zip
-ADD $FUNKWHALE_DOWNLOAD_URL?job=build_front /tmp/front.zip
 
 
 #
@@ -85,6 +77,13 @@ RUN \
 	adduser -s /bin/false -D -H funkwhale funkwhale && \
 	\
 	\
+	echo 'downloading archives' && \
+	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay.tar.gz && \
+	wget https://github.com/acoustid/chromaprint/releases/download/v1.4.2/chromaprint-fpcalc-1.4.2-linux-x86_64.tar.gz -O /tmp/fpcalc.tar.gz && \
+	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_api" -O /tmp/api.zip && \
+	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_front" -O /tmp/front.zip && \
+	\
+	\
 	echo 'extracting archives' && \
 	cd /app && \
 	unzip /tmp/api.zip && \
@@ -104,7 +103,7 @@ RUN \
 
 
 #
-# Entry
+# Entrypoint
 #
 
 COPY ./root /

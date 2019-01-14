@@ -7,7 +7,7 @@
 ```sh
 docker create \
 	--name=funkwhale \
-	-e FUNKWHALE_URL=<yourdomain.funkwhale> \
+	-e FUNKWHALE_HOSTNAME=<yourdomain.funkwhale> \
 	-v </path/to/data>:/data \
 	-v </path/to/path>:/music:ro \
 	-p 3030:80 \

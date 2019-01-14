@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 [[ "$(whoami)" != 'funkwhale' ]] && echo 'Must be run as `funkwhale` user.' && exit 1
 
-export PGDATA='/data/data'
+[[ -z $PGDATA ]] && export PGDATA='/data/data'
 [[ -w "$PGDATA/PG_VERSION" ]] && exit 0
 
 initdb

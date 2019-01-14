@@ -99,7 +99,11 @@ RUN \
 	echo 'installing pip requirements' && \
 	pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
-	pip3 install -r /app/api/requirements.txt
+	pip3 install -r /app/api/requirements.txt && \
+	\
+	\
+	echo 'removing temp files' && \
+	rm /tmp/*.zip /tmp/*.tar.gz
 
 
 #

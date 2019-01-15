@@ -7,7 +7,7 @@
 ```sh
 docker create \
 	--name=funkwhale \
-	-e FUNKWHALE_URL=<yourdomain.funkwhale> \
+	-e FUNKWHALE_HOSTNAME=<yourdomain.funkwhale> \
 	-v </path/to/data>:/data \
 	-v </path/to/path>:/music:ro \
 	-p 3030:80 \
@@ -18,7 +18,7 @@ docker create \
 ## Parameters
 + `-e PUID` - Optional user ID for volume ownership.
 + `-e PGID` - Optional group ID for volume ownership.
-+ `-e FUNKWHALE_URL` - Domain of your Funkwhale instance.
++ `-e FUNKWHALE_HOSTNAME` - Hostname of your Funkwhale instance.
 + `-v /data` - Volume to save media files and database.
 + `-v /music` - Path to your music.
 + `-p 3030:80` - Access Funkwhale on port 3030.

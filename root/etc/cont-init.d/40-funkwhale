@@ -3,11 +3,7 @@ echo 'collecting static files'
 manage collectstatic --no-input
 
 echo 'running data migration'
-export PGDATA='/data/data'
+[[ -z $PGDATA ]] && export PGDATA='/data/data'
 s6-setuidgid funkwhale pg_ctl start || exit 1
 manage migrate
 s6-setuidgid funkwhale pg_ctl stop
-
-echo 'taking ownership and setting permissions of the funkwhale log directory'
-chown -R funkwhale:funkwhale /var/log/funkwhale
-chmod -R 0755 /var/log/funkwhale

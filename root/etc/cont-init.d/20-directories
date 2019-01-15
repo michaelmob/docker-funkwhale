@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv sh
+mkdir /data
+mkdir -p /run/postgresql
+mkdir -p /run/nginx
+mkdir -p /var/log/funkwhale
+mkdir -p /app/api/staticfiles
+
+# ownership
+chown -R funkwhale:funkwhale /app
+chown -R funkwhale:funkwhale /data
+chown -R funkwhale:funkwhale /var/log/funkwhale
+chown -R funkwhale:funkwhale /run/postgresql
+
+# permission
+chmod -R 0700 /app
+chmod -R 0750 /app/api/staticfiles
+chmod -R 0750 /app/front
+chmod 0750 /app
+chmod 0750 /app/api
+
+chmod -R 0755 /var/log/funkwhale
+chmod -R 0755 /data

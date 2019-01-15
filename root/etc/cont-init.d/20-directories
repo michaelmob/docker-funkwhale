@@ -3,11 +3,13 @@ mkdir /data
 mkdir -p /run/postgresql
 mkdir -p /run/nginx
 mkdir -p /var/log/funkwhale
+mkdir -p /app/api/staticfiles
 
 # ownership
 chown -R funkwhale:funkwhale /app
 chown -R funkwhale:funkwhale /data
 chown -R funkwhale:funkwhale /var/log/funkwhale
+chown -R funkwhale:funkwhale /run/postgresql
 
 # permission
 chmod -R 0700 /app

@@ -90,4 +90,5 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 #
 
 COPY ./root /
+COPY ./src/funkwhale_nginx.template /etc/nginx/funkwhale_nginx.template
 ENTRYPOINT ["/init"]

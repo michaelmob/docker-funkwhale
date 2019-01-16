@@ -82,7 +82,8 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	DATABASE_URL=postgresql://funkwhale@:5432/funkwhale \
 	MEDIA_ROOT=/data/media \
 	MUSIC_DIRECTORY_PATH=/music \
-	NGINX_MAX_BODY_SIZE=100M
+	NGINX_MAX_BODY_SIZE=100M \
+	STATIC_ROOT=/app/api/staticfiles
 
 
 #

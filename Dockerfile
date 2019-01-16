@@ -1,42 +1,6 @@
 FROM alpine:3.8
 MAINTAINER thetarkus
 
-
-#
-# Arguments
-#
-
-ARG FUNKWHALE_VERSION=0.17
-ARG FUNKWHALE_REPO_URL=https://dev.funkwhale.audio/funkwhale/funkwhale
-ARG FUNKWHALE_DOWNLOAD_URL=$FUNKWHALE_REPO_URL/-/jobs/artifacts/$FUNKWHALE_VERSION/download
-
-
-#
-# Environment
-# https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/deploy/env.prod.sample
-#
-
-# Funkwhale
-ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale
-ENV FUNKWHALE_PROTOCOL=http
-
-# Django
-ENV DJANGO_SETTINGS_MODULE=config.settings.production
-ENV DJANGO_SECRET_KEY=funkwhale
-ENV DJANGO_ALLOWED_HOSTS='127.0.0.1,*'
-
-# Database
-ENV DATABASE_URL=postgresql://funkwhale@:5432/funkwhale
-
-# Media
-ENV MEDIA_ROOT=/data/media
-ENV MUSIC_DIRECTORY_PATH=/music
-
-# Webserver
-ENV NGINX_MAX_BODY_SIZE=100M
-
-
-
 #
 # Installation
 #
@@ -44,29 +8,28 @@ ENV NGINX_MAX_BODY_SIZE=100M
 RUN \
 	echo 'installing dependencies' && \
 	apk add                \
-		shadow             \
-		youtube-dl         \
-		gettext            \
-		git                \
-		postgresql         \
-		postgresql-contrib \
-		postgresql-dev     \
-		python3-dev        \
-		py3-psycopg2       \
-		py3-pillow         \
-		redis              \
-		nginx              \
-		musl-dev           \
-		gcc                \
-		unzip              \
-		libldap            \
-		libsasl            \
-		ffmpeg             \
-		libpq              \
-		libmagic           \
-		libffi-dev         \
-		zlib-dev           \
-		openldap-dev && \
+	shadow             \
+	gettext            \
+	git                \
+	postgresql         \
+	postgresql-contrib \
+	postgresql-dev     \
+	python3-dev        \
+	py3-psycopg2       \
+	py3-pillow         \
+	redis              \
+	nginx              \
+	musl-dev           \
+	gcc                \
+	unzip              \
+	libldap            \
+	libsasl            \
+	ffmpeg             \
+	libpq              \
+	libmagic           \
+	libffi-dev         \
+	zlib-dev           \
+	openldap-dev && \
 	\
 	\
 	echo 'creating directories' && \
@@ -79,16 +42,10 @@ RUN \
 	\
 	echo 'downloading archives' && \
 	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay.tar.gz && \
-	wget https://github.com/acoustid/chromaprint/releases/download/v1.4.2/chromaprint-fpcalc-1.4.2-linux-x86_64.tar.gz -O /tmp/fpcalc.tar.gz && \
-	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_api" -O /tmp/api.zip && \
-	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_front" -O /tmp/front.zip && \
 	\
 	\
 	echo 'extracting archives' && \
 	cd /app && \
-	unzip /tmp/api.zip && \
-	unzip /tmp/front.zip && \
-	tar --strip 1 -C /usr/local/bin -xzf /tmp/fpcalc.tar.gz && \
 	tar -C / -xzf /tmp/s6-overlay.tar.gz && \
 	\
 	\
@@ -96,14 +53,37 @@ RUN \
 	rm /etc/nginx/conf.d/default.conf && \
 	\
 	\
+	echo 'removing temp files' && \
+	rm /tmp/*.tar.gz
+
+COPY ./src/api /app/api
+
+RUN \
+	echo 'fixing requirements file for alpine' && \
+	sed -i '/Pillow/d' /app/api/requirements/base.txt && \
+	\
+	\
 	echo 'installing pip requirements' && \
 	pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
-	pip3 install -r /app/api/requirements.txt && \
-	\
-	\
-	echo 'removing temp files' && \
-	rm /tmp/*.zip /tmp/*.tar.gz
+	pip3 install -r /app/api/requirements.txt
+
+COPY ./src/front /app/front
+#
+# Environment
+# https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/deploy/env.prod.sample
+# (We put environment at the end to avoid busting build cache on each ENV change)
+
+ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
+	FUNKWHALE_PROTOCOL=http \
+	DJANGO_SETTINGS_MODULE=config.settings.production \
+	DJANGO_SECRET_KEY=funkwhale \
+	DJANGO_ALLOWED_HOSTS='127.0.0.1,*' \
+	DATABASE_URL=postgresql://funkwhale@:5432/funkwhale \
+	MEDIA_ROOT=/data/media \
+	MUSIC_DIRECTORY_PATH=/music \
+	NGINX_MAX_BODY_SIZE=100M \
+	STATIC_ROOT=/app/api/staticfiles
 
 
 #
@@ -111,4 +91,5 @@ RUN \
 #
 
 COPY ./root /
+COPY ./src/funkwhale_nginx.template /etc/nginx/funkwhale_nginx.template
 ENTRYPOINT ["/init"]

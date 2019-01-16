@@ -29,16 +29,35 @@ docker create \
 Creation of the container will take a minute or two. The commands in the sections below will not work until the initialization is complete. For any subsequent runs (assuming you are re-using the `/data` volume), there will be no wait time.
 
 ### Create an initial superuser account
-On the creation of your container, you will need to create an account. Running the following command will prompt you for a username, email, and password for your new account.  
+On the creation of your container, you will need to create an account. Running the following command will prompt you for a username, email, and password for your new account.
 ```sh
 docker exec -it funkwhale manage createsuperuser
 ```
 
 ### Importing Music
-To import your music, open your Funkwhale instance in your browser and find the libraries page under "Add content" and create a library. Click the "details" button on your newly created library and get the library ID from the URL bar. It will look similar to the format of: `b8756c0d-839b-461f-b334-583983dc9ead`.  
-Set the `LIBRARY_ID` environment variable (or replace it inside of the command) with your library ID, then run the command below.  
+To import your music, open your Funkwhale instance in your browser and find the libraries page under "Add content" and create a library. Click the "details" button on your newly created library and get the library ID from the URL bar. It will look similar to the format of: `b8756c0d-839b-461f-b334-583983dc9ead`.
+Set the `LIBRARY_ID` environment variable (or replace it inside of the command) with your library ID, then run the command below.
 ```sh
 # For file structures similar to ./Artist/Album/Track.mp3
 docker exec -it funkwhale manage import_files $LIBRARY_ID "/music/**/**/*.mp3" --in-place --async
 ```
 For more information see the [Funkwhale docs on importing music](https://docs.funkwhale.audio/importing-music.html).
+
+### Build this image
+
+This image is built and pushed automatically on `funkwhale/all-in-one`, for all Funkwhale
+releases and for the development version as well (using the `develop` tag).
+
+If you want to build it manually, you can run the following instructions:
+
+```bash
+image_name="mycustomimage"
+# replace develop by any tag or branch name
+version="develop"
+# download Funkwhale front and api artifacts and nginx configuration
+./scripts/download-artifact.sh src/ $version build_front
+./scripts/download-artifact.sh src/ $version build_api
+./scripts/download-nginx-template.sh src/ $version
+docker build -t $image_name:$version .
+
+```

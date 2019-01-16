@@ -37,28 +37,15 @@ RUN \
 	\
 	\
 	echo 'creating users' && \
-	adduser -s /bin/false -D -H funkwhale funkwhale
-
-
-#
-# Arguments
-#
-
-ARG FUNKWHALE_VERSION=0.17
-ARG FUNKWHALE_REPO_URL=https://dev.funkwhale.audio/funkwhale/funkwhale
-ARG FUNKWHALE_DOWNLOAD_URL=$FUNKWHALE_REPO_URL/-/jobs/artifacts/$FUNKWHALE_VERSION/download
-
-RUN \
+	adduser -s /bin/false -D -H funkwhale funkwhale && \
+	\
+	\
 	echo 'downloading archives' && \
 	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay.tar.gz && \
-	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_api" -O /tmp/api.zip && \
-	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_front" -O /tmp/front.zip && \
 	\
 	\
 	echo 'extracting archives' && \
 	cd /app && \
-	unzip /tmp/api.zip && \
-	unzip /tmp/front.zip && \
 	tar -C / -xzf /tmp/s6-overlay.tar.gz && \
 	\
 	\
@@ -66,16 +53,22 @@ RUN \
 	rm /etc/nginx/conf.d/default.conf && \
 	\
 	\
+	echo 'removing temp files' && \
+	rm /tmp/*.tar.gz
+
+COPY ./src/api /app/api
+
+RUN \
+	echo 'fixing requirements file for alpine' && \
+	sed -i '/Pillow/d' /app/api/requirements/base.txt && \
+	\
+	\
 	echo 'installing pip requirements' && \
 	pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
-	pip3 install -r /app/api/requirements.txt && \
-	\
-	\
-	echo 'removing temp files' && \
-	rm /tmp/*.zip /tmp/*.tar.gz
+	pip3 install -r /app/api/requirements.txt
 
-
+COPY ./src/front /app/front
 #
 # Environment
 # https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/deploy/env.prod.sample

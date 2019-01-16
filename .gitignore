@@ -1,1 +1,5 @@
 data/
+src/*.zip
+src/api
+src/front
+src/*.template

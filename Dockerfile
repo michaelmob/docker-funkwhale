@@ -17,23 +17,15 @@ ARG FUNKWHALE_DOWNLOAD_URL=$FUNKWHALE_REPO_URL/-/jobs/artifacts/$FUNKWHALE_VERSI
 #
 
 # Funkwhale
-ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale
-ENV FUNKWHALE_PROTOCOL=http
-
-# Django
-ENV DJANGO_SETTINGS_MODULE=config.settings.production
-ENV DJANGO_SECRET_KEY=funkwhale
-ENV DJANGO_ALLOWED_HOSTS='127.0.0.1,*'
-
-# Database
-ENV DATABASE_URL=postgresql://funkwhale@:5432/funkwhale
-
-# Media
-ENV MEDIA_ROOT=/data/media
-ENV MUSIC_DIRECTORY_PATH=/music
-
-# Webserver
-ENV NGINX_MAX_BODY_SIZE=100M
+ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
+	FUNKWHALE_PROTOCOL=http \
+	DJANGO_SETTINGS_MODULE=config.settings.production \
+	DJANGO_SECRET_KEY=funkwhale \
+	DJANGO_ALLOWED_HOSTS='127.0.0.1,*' \
+	DATABASE_URL=postgresql://funkwhale@:5432/funkwhale \
+	MEDIA_ROOT=/data/media \
+	MUSIC_DIRECTORY_PATH=/music \
+	NGINX_MAX_BODY_SIZE=100M
 
 
 

@@ -37,7 +37,6 @@ RUN \
 	echo 'installing dependencies' && \
 	apk add                \
 		shadow             \
-		youtube-dl         \
 		gettext            \
 		git                \
 		postgresql         \
@@ -71,7 +70,6 @@ RUN \
 	\
 	echo 'downloading archives' && \
 	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay.tar.gz && \
-	wget https://github.com/acoustid/chromaprint/releases/download/v1.4.2/chromaprint-fpcalc-1.4.2-linux-x86_64.tar.gz -O /tmp/fpcalc.tar.gz && \
 	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_api" -O /tmp/api.zip && \
 	wget "$FUNKWHALE_DOWNLOAD_URL?job=build_front" -O /tmp/front.zip && \
 	\
@@ -80,7 +78,6 @@ RUN \
 	cd /app && \
 	unzip /tmp/api.zip && \
 	unzip /tmp/front.zip && \
-	tar --strip 1 -C /usr/local/bin -xzf /tmp/fpcalc.tar.gz && \
 	tar -C / -xzf /tmp/s6-overlay.tar.gz && \
 	\
 	\

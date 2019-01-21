@@ -4,7 +4,7 @@ MAINTAINER thetarkus
 #
 # Installation
 #
-
+ARG arch=amd64
 RUN \
 	echo 'installing dependencies' && \
 	apk add                \
@@ -41,7 +41,7 @@ RUN \
 	\
 	\
 	echo 'downloading archives' && \
-	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-amd64.tar.gz -O /tmp/s6-overlay.tar.gz && \
+	wget https://github.com/just-containers/s6-overlay/releases/download/v1.21.7.0/s6-overlay-$arch.tar.gz -O /tmp/s6-overlay.tar.gz && \
 	\
 	\
 	echo 'extracting archives' && \

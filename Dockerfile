@@ -59,6 +59,7 @@ RUN \
 COPY ./src/api /app/api
 
 RUN \
+	ln -s /usr/bin/python3 /usr/bin/python && \
 	echo 'fixing requirements file for alpine' && \
 	sed -i '/Pillow/d' /app/api/requirements/base.txt && \
 	\

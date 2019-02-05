@@ -77,7 +77,7 @@ COPY ./src/front /app/front
 #
 # Environment
 # https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/deploy/env.prod.sample
-# (Environment at the end to avoid busting build cache on each ENV change)
+# (Environment is at the end to avoid busting build cache on each ENV change)
 #
 
 ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \

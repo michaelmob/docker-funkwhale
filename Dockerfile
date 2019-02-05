@@ -1,9 +1,11 @@
 FROM alpine:3.8
 MAINTAINER thetarkus
 
+
 #
 # Installation
 #
+
 ARG arch=amd64
 RUN \
 	echo 'installing dependencies' && \
@@ -70,10 +72,13 @@ RUN \
 	pip3 install -r /app/api/requirements.txt
 
 COPY ./src/front /app/front
+
+
 #
 # Environment
 # https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/deploy/env.prod.sample
-# (We put environment at the end to avoid busting build cache on each ENV change)
+# (Environment is at the end to avoid busting build cache on each ENV change)
+#
 
 ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	FUNKWHALE_PROTOCOL=http \
@@ -85,7 +90,7 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	MUSIC_DIRECTORY_PATH=/music \
 	NGINX_MAX_BODY_SIZE=100M \
 	STATIC_ROOT=/app/api/staticfiles \
-        FUNKWHALE_SPA_HTML_ROOT=http://localhost/front/
+	FUNKWHALE_SPA_HTML_ROOT=http://localhost/front/
 
 #
 # Entrypoint

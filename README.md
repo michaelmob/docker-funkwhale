@@ -44,20 +44,17 @@ docker exec -it funkwhale manage import_files $LIBRARY_ID "/music/**/**/*.mp3" -
 For more information see the [Funkwhale docs on importing music](https://docs.funkwhale.audio/importing-music.html).
 
 ### Build this image
+This image is built and pushed automatically on `funkwhale/all-in-one`, for all Funkwhale releases and for the development version as well (using the `develop` tag).
 
-This image is built and pushed automatically on `funkwhale/all-in-one`, for all Funkwhale
-releases and for the development version as well (using the `develop` tag).
-
-If you want to build it manually, you can run the following instructions:
-
+If you want to build it manually, you can run the following:
 ```bash
-image_name="mycustomimage"
-# replace develop by any tag or branch name
-version="develop"
+image_name='mycustomimage'  # choose a name for the image
+version='develop'  # replace 'develop' with any tag or branch name
+arch='amd64'  # set your cpu architecture
+
 # download Funkwhale front and api artifacts and nginx configuration
 ./scripts/download-artifact.sh src/ $version build_front
 ./scripts/download-artifact.sh src/ $version build_api
 ./scripts/download-nginx-template.sh src/ $version
-docker build -t $image_name:$version .
-
+docker build --build-arg $arch -t $image_name:$version .
 ```

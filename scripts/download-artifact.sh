@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+set -eu
 
 dest_dir=$1
 artifact_version=$2
@@ -13,4 +14,4 @@ echo "Downloading $artifact_url to $dest_file…"
 wget "$artifact_url" -O $dest_file
 echo "Unzipping $dest_file to $dest_dir"
 unzip -o $dest_file -d $dest_dir
-echo "Done!"
+echo 'Done!'

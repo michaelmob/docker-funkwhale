@@ -11,7 +11,7 @@ docker create \
 	-v </path/to/data>:/data \
 	-v </path/to/path>:/music:ro \
 	-p 3030:80 \
-	funkwhale/all-in-one
+	thetarkus/funkwhale
 ```
 
 

@@ -84,8 +84,8 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	MEDIA_ROOT=/data/media \
 	MUSIC_DIRECTORY_PATH=/music \
 	NGINX_MAX_BODY_SIZE=100M \
-	STATIC_ROOT=/app/api/staticfiles
-
+	STATIC_ROOT=/app/api/staticfiles \
+        FUNKWHALE_SPA_HTML_ROOT=http://localhost/front/
 
 #
 # Entrypoint

@@ -1,3 +1,3 @@
 #!/usr/bin/with-contenv sh
 cd /app/api
-exec s6-setuidgid funkwhale python3 manage.py $@
+exec s6-setuidgid funkwhale python3 manage.py "$@"

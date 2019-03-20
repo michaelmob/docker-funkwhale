@@ -43,6 +43,13 @@ docker exec -it funkwhale manage import_files $LIBRARY_ID "/music/**/**/*.mp3" -
 ```
 For more information see the [Funkwhale docs on importing music](https://docs.funkwhale.audio/importing-music.html).
 
+### Running behind a proxy
+
+In more involved deployments, you may have a reverse proxy in front of the container.
+
+If it is the case, add the `-e NESTED_PROXY=1` flag to the docker run command, or ensure
+`NESTED_PROXY=1` is available in the container environment.
+
 ### Build this image
 This image is built and pushed automatically on `funkwhale/all-in-one`, for all Funkwhale releases and for the development version as well (using the `develop` tag).
 

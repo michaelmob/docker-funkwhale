@@ -1,2 +1,6 @@
 #!/usr/bin/with-contenv sh
+if [ "$NESTED_PROXY" = "1" ]; then
+    echo "Setting up nested proxy conf…"
+    cp /etc/nginx/funkwhale_proxy_nested.conf /etc/nginx/funkwhale_proxy.conf
+fi
 _=$ envsubst < /etc/nginx/funkwhale_nginx.template > /etc/nginx/conf.d/funkwhale.conf

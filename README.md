@@ -36,6 +36,12 @@ On the creation of your container, you will need to create an account. Running t
 docker exec -it funkwhale manage createsuperuser
 ```
 
+all this does is run `/usr/local/bin/manage createsuperuser` on the docker
+
+if you are running on synology docker, in the funkwhale docker window go to Terminal, click the drop-down arrow by create and enter `/bin/sh`
+in the terminal prompt, enter `/usr/local/bin/manage createsuperuser`
+
+
 ### Importing Music
 To import your music, open your Funkwhale instance in your browser and find the libraries page under "Add content" and create a library. Click the "details" button on your newly created library and get the library ID from the URL bar. It will look similar to the format of: `b8756c0d-839b-461f-b334-583983dc9ead`.
 Set the `LIBRARY_ID` environment variable (or replace it inside of the command) with your library ID, then run the command below.

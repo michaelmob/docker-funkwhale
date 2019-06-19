@@ -18,7 +18,7 @@ Please submit relevant logs between three backticks.
 docker logs ${CONTAINER_ID}
 
 # Logs are located in the `/var/log/funkwhale/` directory.
-docker exec -it ${CONTAINER_ID} cat /var/log/funkwhale/{daphne,celery-worker,celery-beat}.log
+docker exec -it ${CONTAINER_ID} cat /var/log/funkwhale/{gunicorn,celery-worker,celery-beat}.log
 ```
 
 **Options**

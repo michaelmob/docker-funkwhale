@@ -21,6 +21,7 @@ RUN \
 	py3-pillow         \
 	redis              \
 	nginx              \
+	make              \
 	musl-dev           \
 	gcc                \
 	unzip              \
@@ -69,7 +70,8 @@ RUN \
 	echo 'installing pip requirements' && \
 	pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
-	pip3 install -r /app/api/requirements.txt
+	pip3 install -r /app/api/requirements.txt && \
+	pip3 install gunicorn uvicorn
 
 COPY ./src/front /app/front
 
@@ -90,8 +92,8 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	MUSIC_DIRECTORY_PATH=/music \
 	NGINX_MAX_BODY_SIZE=100M \
 	STATIC_ROOT=/app/api/staticfiles \
-	FUNKWHALE_SPA_HTML_ROOT=/app/front/dist/index.html
-
+	FUNKWHALE_SPA_HTML_ROOT=/app/front/dist/index.html \
+	FUNKWHALE_WEB_WORKERS=1
 #
 # Entrypoint
 #

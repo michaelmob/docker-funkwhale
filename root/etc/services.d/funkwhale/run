@@ -36,4 +36,4 @@ echo '...........................NmmddhhhyyhhhhdmmN...........................'
 echo
 
 cd /app/api
-exec s6-setuidgid funkwhale daphne config.asgi:application --access-log /var/log/funkwhale/daphne.log
+exec s6-setuidgid funkwhale gunicorn config.asgi:application -w ${FUNKWHALE_WEB_WORKERS} -k uvicorn.workers.UvicornWorker -b 127.0.0.1:8000 --access-logfile /var/log/funkwhale/gunicorn.log

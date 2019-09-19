@@ -59,7 +59,8 @@ RUN \
 	echo 'removing temp files' && \
 	rm /tmp/*.tar.gz
 
-COPY ./src/api /app/api
+COPY ./src/api/requirements.txt /app/api/requirements.txt
+COPY ./src/api/requirements/ /app/api/requirements/
 
 RUN \
 	ln -s /usr/bin/python3 /usr/bin/python && \
@@ -73,6 +74,7 @@ RUN \
 	pip3 install -r /app/api/requirements.txt && \
 	pip3 install gunicorn uvicorn
 
+COPY ./src/api/ /app/api/
 COPY ./src/front /app/front
 
 

@@ -72,7 +72,8 @@ RUN \
 	pip3 install --upgrade pip && \
 	pip3 install setuptools wheel && \
 	pip3 install -r /app/api/requirements.txt && \
-	pip3 install gunicorn uvicorn
+	pip3 install gunicorn uvicorn && \
+	pip3 install service_identity
 
 COPY ./src/api/ /app/api/
 COPY ./src/front /app/front

@@ -96,7 +96,8 @@ ENV FUNKWHALE_HOSTNAME=yourdomain.funkwhale \
 	NGINX_MAX_BODY_SIZE=100M \
 	STATIC_ROOT=/app/api/staticfiles \
 	FUNKWHALE_SPA_HTML_ROOT=/app/front/dist/index.html \
-	FUNKWHALE_WEB_WORKERS=1
+	FUNKWHALE_WEB_WORKERS=1 \
+	CELERYD_CONCURRENCY=0
 #
 # Entrypoint
 #

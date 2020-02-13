@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.11
 MAINTAINER thetarkus
 
 
@@ -9,7 +9,7 @@ MAINTAINER thetarkus
 ARG arch=amd64
 RUN \
 	echo 'installing dependencies' && \
-	apk add                \
+	apk add --no-cache \
 	shadow             \
 	gettext            \
 	git                \

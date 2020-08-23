@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv sh
-mkdir /data
+mkdir -p /data
 mkdir -p /run/postgresql
 mkdir -p /run/nginx
 mkdir -p /var/log/funkwhale

@@ -35,12 +35,13 @@ RUN \
 	openldap-dev && \
 	\
 	\
-	echo 'creating directories' && \
-	mkdir -p /app /run/nginx /run/postgresql /var/log/funkwhale && \
-	\
-	\
 	echo 'creating users' && \
 	adduser -s /bin/false -D -H funkwhale funkwhale && \
+	\
+	\
+	echo 'creating directories' && \
+	mkdir -p /app/api /run/nginx /run/postgresql /var/log/funkwhale && \
+	chown funkwhale:funkwhale /app/api /var/log/funkwhale && \
 	\
 	\
 	echo 'downloading archives' && \

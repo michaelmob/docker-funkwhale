@@ -6,6 +6,7 @@ mkdir -p /var/log/funkwhale
 mkdir -p /app/api/staticfiles
 
 # ownership
+chown funkwhale:funkwhale /data
 chown -R funkwhale:funkwhale /app
 chown -R funkwhale:funkwhale /var/log/funkwhale
 chown -R funkwhale:funkwhale /run/postgresql

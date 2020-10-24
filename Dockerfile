@@ -1,6 +1,7 @@
 FROM alpine:3.10
 MAINTAINER thetarkus
 
+EXPOSE 80
 
 #
 # Installation

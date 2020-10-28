@@ -75,7 +75,9 @@ RUN \
 	pip3 install setuptools wheel && \
 	pip3 install -r /app/api/requirements.txt && \
 	pip3 install gunicorn uvicorn && \
-	pip3 install service_identity
+	pip3 install service_identity && \
+	pip3 install httptools && \
+	pip3 install uvloop
 
 COPY ./src/api/ /app/api/
 COPY ./src/front /app/front

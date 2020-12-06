@@ -5,7 +5,7 @@
 
 ## Usage
 ```sh
-docker create \
+docker run \
 	--name=funkwhale \
 	-e FUNKWHALE_HOSTNAME=<yourdomain.funkwhale> \
 	-e NESTED_PROXY=0 \
